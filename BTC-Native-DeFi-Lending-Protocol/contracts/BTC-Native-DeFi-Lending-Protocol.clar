@@ -226,3 +226,22 @@
     (ok true)
   )
 )
+
+;; Register pending BTC collateral operation
+(define-public (register-btc-collateral (bitcoin-tx-id (buff 32)) (amount uint))
+  (begin
+    (try! (check-protocol-active))
+    
+    ;; Store the pending BTC collateral operation
+    (map-set pending-btc-collateral
+      { bitcoin-tx-id: bitcoin-tx-id }
+      {
+        user: tx-sender,
+        amount: amount,
+        status: "pending"
+      }
+    )
+    
+    (ok true)
+  )
+)
